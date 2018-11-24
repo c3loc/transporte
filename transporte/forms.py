@@ -33,8 +33,8 @@ class LoginForm(FlaskForm):
 class TransportForm(FlaskForm):
     organizer = StringField('Organizer', validators=[DataRequired()])
     needs_organization = BooleanField('Needs organization')
-    location_from = TextAreaField('From', validators=[DataRequired()])
-    location_to = TextAreaField('To', validators=[DataRequired()])
+    location_from = TextAreaField('Origin', validators=[DataRequired()])
+    location_to = TextAreaField('Destination', validators=[DataRequired()])
     date = DateField('Date', validators=[DataRequired(), DateRange(
         min=max(datetime.date.today(), datetime.date(year=2018, month=12, day=15)),
         max=datetime.date(year=2019, month=1, day=6))], widget=widgets_html5.DateInput())
