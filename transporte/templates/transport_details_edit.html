@@ -21,6 +21,9 @@
                        %}checked{% endif %}>
 
                 <label class="form-check-label" for="needs_organization">Needs organization</label>
+                <small id="needsOrganizationHelpBlock" class="form-text text-muted">
+                    Check this box if you need us to organize your transport (need help, driver, spedition, ..)
+                </small>
             </div>
         </div>
         {{ render_form_group(render_field(transportform.location_from, 6) + render_field(transportform.location_to, 6))
