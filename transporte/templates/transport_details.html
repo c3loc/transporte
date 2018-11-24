@@ -1,0 +1,112 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% if transport %}
+<h1 class="page-header">Transport Details</h1>
+
+<div class="row">
+    <div class="col-xs-3 col-sm-2">
+        <label for="date">Date:</label>
+    </div>
+    <div class="col-xs-9 col-sm-4">
+        <span id="date">{{ transport.date|datetime }}, {{ transport.time}}</span>
+    </div>
+    <div class="col-xs-3 col-sm-2">
+        <label for="organizer">Organizer:</label>
+    </div>
+    <div class="col-xs-9 col-sm-4">
+        <span id="organizer">{{ transport.organizer }}</span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-3 col-sm-2">
+        <label for="vehicle">Vehicle:</label>
+    </div>
+    <div class="col-xs-9 col-sm-4">
+        <span id="vehicle">{{ vehicletypes[transport.vehicle] }}</span>
+    </div>
+    <div class="col-xs-3 col-sm-2">
+        <label for="vehicle_owner">Spedition:</label>
+    </div>
+    <div class="col-xs-9 col-sm-4"
+    <span id="vehicle_owner">{{ transport.vehicle_owner }}</span>
+</div>
+</div>
+
+<div class="row">
+    <div class="col-sm-2">
+        <label for="location_from">From:</label>
+    </div>
+    <div class="col-sm-4" id="location_from">
+        <p>
+            {{ transport.location_from|nl2br }}
+        </p>
+    </div>
+
+    <div class="col-sm-2">
+        <label for="location_to">To:</label>
+    </div>
+    <div class="col-sm-4" id="location_to">
+        <p>
+            {{ transport.location_to|nl2br }}
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-2">
+        <label for="driver_contact">Driver Contact:</label>
+    </div>
+    <div class="col-sm-4" id="driver_contact">
+        <p>
+            {{ transport.driver_contact|nl2br }}
+        </p>
+    </div>
+    <div class="col-sm-2">
+        <label for="orga_contact">Orga Contact:</label>
+    </div>
+    <div class="col-sm-4" id="orga_contact">
+        <p>
+            {{ transport.orga_contact|nl2br }}
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-2">
+        <label for="goods">Goods:</label>
+    </div>
+    <div class="col-sm-10" id="goods">
+        <p>
+            {{ transport.goods|nl2br }}
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-2">
+        <label for="comment">Comment:</label>
+    </div>
+    <div class="col-sm-10" id="comment">
+        <p>
+            {{ transport.comment|nl2br }}
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-2">
+        <label for="comment">Files:</label>
+    </div>
+    <div class="col-sm-10" id="comment">
+        <ul>
+            {% for file in transport.files %}
+            <li>
+                <a href="/{{ file.path }}">{{ file.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

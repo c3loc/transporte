@@ -1,0 +1,87 @@
+{% extends 'layout.html' %}
+
+{% block meta %}
+<meta http-equiv="refresh" content="300;">
+{% endblock %}
+
+{% block content %}
+<h1 class="page-header">Transports</h1>
+<form method="GET">
+    {{ filterform.day(**{'onchange': 'this.form.submit()'}) }}
+    {{ filterform.open.label }} {{ filterform.open }}
+    {{ filterform.done.label }} {{ filterform.done }}
+    {{ filterform.cancelled.label }} {{ filterform.cancelled }}
+</form>
+
+<table class="table" id="transportlist">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col"><i class="fas exclamation-triangle"></i></th>
+        <th scope="col">Date</th>
+        <th scope="col">Time</th>
+        <th scope="col">From</th>
+        <th scope="col">To</th>
+        <th scope="col">Vehicle</th>
+        <th scope="col">Organizer</th>
+        <th scope="col">Goods</th>
+        <th scope="col">User</th>
+        <th scope="col">Comment</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for transport in transportlist %}
+    <tr class={% if transport.cancelled %}
+    "table-secondary" style="text-decoration: line-through;">
+    {% elif transport.done %}"table-success">
+    {% elif transport.date < today %}"table-danger">
+    {% elif transport.date == today %}"table-warning">
+    {% else %}"">
+    {% endif %}
+    <th scope="row"><a href="{{ url_for('show_transport', id=transport.id) }}">{{ transport.id }}</a></th>
+    <td>{% if transport.needs_organization %}<i class="fas fa-exclamation-triangle"></i>{% endif %}</td>
+    <td>{{ transport.date }}</td>
+    <td>{{ transport.time }}</td>
+    <td>{{ transport.location_from }}</td>
+    <td>{{ transport.location_to }}</td>
+    <td>{{ vehicletypes[transport.vehicle] }}</td>
+    <td>{{ transport.organizer }}</td>
+    <td>{{ transport.goods }}</td>
+    <td>{{ transport.user.login|safe }}</td>
+    <td>{{ transport.comment }}</td>
+    <td>
+        {% if not (transport.done or transport.cancelled) or current_user.role in ['helpdesk', 'admin'] %}
+        <div class="pull-right">
+            <a href="{{ url_for('edit_transport', id=transport.id) }}"
+               class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+        </div>
+        {% endif %}
+        {% if not transport.done and not transport.cancelled and current_user.role in ['helpdesk', 'admin'] %}
+        <div class="pull-right">
+            <a href="{{ url_for('mark_transport', mark='done', id=transport.id) }}"
+               class="btn btn-success"><i class="fas fa-check"></i></a>
+        </div>
+        {% endif %}
+        {% if not transport.done and not transport.cancelled %}
+        <div class="pull-right">
+            <a href="{{ url_for('mark_transport', mark='cancelled', id=transport.id) }}"
+               class="btn btn-danger"><i class="fas fa-times-circle"></i></a>
+        </div>
+        {% endif %}
+    </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#transportlist').DataTable( {
+            "order": [[2, "asc"]],
+            "stateSave": true,
+            "responsive": true
+        } );
+    });
+</script>
+{% endblock  %}

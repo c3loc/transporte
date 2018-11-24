@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/static/gfx/favicon.ico">
+
+    <title>c3loc Transportplanung Login</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fa-v5.5.0-all.css') }}">
+
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/bootstrap-4.1.1.min.css') }}"/>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signin.css') }}">
+
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js/bootstrap-4.1.1.min.js') }}"></script>
+</head>
+
+<body>
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    <div class="flashes">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category if not category == 'message' else 'info' }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <form class="form-signin" role="form" action="{{ url_for('login') }}" method="POST">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        {{ loginform.csrf_token }}
+        {% if not loginform.login.errors %}
+        {{ loginform.login(class='form-control', placeholder='Email', required='required', autofocus='autofocus') }}
+        {% else %}
+        {{ loginform.login(class='form-control is-invalid', placeholder='Email', required='required', autofocus='autofocus') }}
+        <div class="invalid-feedback">
+            <ul class=errors>
+                {% for error in loginform.login.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+
+    <div class="alert alert-info">
+        By entering your emailaddress you agree that our system is allowed to store your emailaddress and send you
+        emails.
+        If you don't want to receive emails from us, just don't enter your address.
+    </div>
+
+</div>
+</body>
+</html>

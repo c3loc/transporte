@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% if transport %}
+<h1 class="page-header">Mark transport {{ mark }}</h1>
+
+<p>Really mark this transport as {{ mark }}?</p>
+<form class="form-horizontal" role="form" method="POST"
+    action="{{ url_for('mark_transport', mark=mark, id=transport.id) if transport else url_for('mark_transport_done') }}">
+    {{ form.csrf_token }}
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-3">
+            <button class="btn btn-lg btn-primary" type="submit">Save</button>
+        </div>
+    </div>
+</form>
+{% endif %}
+{% endblock %}

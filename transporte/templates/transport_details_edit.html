@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+{% from "_formhelper.html" import render_form_group, render_field %}
+
+{% block content %}
+{% if transport %}
+<h1 class="page-header">Add/Edit Transport</h1>
+<form class="needs-validation"
+      action="{{ url_for('edit_transport', id=transport.id) if transport else url_for('edit_transport') }}"
+      method="POST"
+      enctype="multipart/form-data"
+      novalidate>
+    <div class="offset-sm-1 col-sm-10">
+        {{ transportform.csrf_token }}
+        {{ render_form_group(render_field(transportform.organizer, 12)) }}
+        <div class="form-group col-sm-12">
+            <div class="form-check">
+
+                <input class="form-check-input" id="needs_organization" name="needs_organization"
+                       placeholder="Needs organization" type="checkbox"
+                       value="{{ transportform.needs_organization.data }}" {% if transportform.needs_organization.data
+                       %}checked{% endif %}>
+
+                <label class="form-check-label" for="needs_organization">Needs organization</label>
+            </div>
+        </div>
+        {{ render_form_group(render_field(transportform.location_from, 6) + render_field(transportform.location_to, 6))
+        }}
+
+        {{ render_form_group(render_field(transportform.date, 3) + render_field(transportform.time, 3) +
+        render_field(transportform.vehicle, 6)) }}
+
+        {{ render_form_group(render_field(transportform.goods, 12)) }}
+        {{ render_form_group(render_field(transportform.vehicle_owner, 12)) }}
+
+        {{ render_form_group(render_field(transportform.driver_contact, 6) + render_field(transportform.orga_contact,
+        6)) }}
+
+        {{ render_form_group(render_field(transportform.comment, 12)) }}
+
+        {{ render_form_group(render_field(transportform.file_upload, 12)) }}
+
+        <div class="form-group col-sm-12">
+            <ul>
+                {% for file in transport.files %}
+                <li>
+                    <a href="/{{ file.path }}">{{ file.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-3">
+                <button class="btn btn-lg btn-primary" type="submit">Save</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% from "_formhelper.html" import render_form_group, render_field %}
+
+{% block content %}
+{% if user %}
+<h1 class="page-header">User Details</h1>
+
+<form class="col-lg-offset-1 form-horizontal" role="form"
+      action="{{ url_for('edit_user', id=user.id) }}"
+      method="POST">
+    {{ roleform.csrf_token }}
+
+    <div class="row">
+        <div class="col-xs-3 col-sm-2">
+            <label for="login">Login</label>
+        </div>
+        <div class="col-xs-9 col-sm-4">
+            <span id="login">{{ user.login }}</span>
+        </div>
+        <div class="col-xs-3 col-sm-2">
+            {{ roleform.role.label }}
+        </div>
+        <div class="col-xs-9 col-sm-4">
+            {{ roleform.role(class='form-control input-lg') }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-3">
+            <button class="btn btn-lg btn-primary" type="submit">Save</button>
+        </div>
+    </div>
+
+{% endif %}
+{% endblock %}
