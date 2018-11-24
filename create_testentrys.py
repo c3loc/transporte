@@ -16,7 +16,7 @@ users = User.query.all()
 
 while len(users) < 4:
     user = User(
-        login='{}@test.psy.rocks'.format(''.join([choice(string.ascii_lowercase) for _ in range(5)]), role=choice(roles)))
+        login='{}@test.psy.rocks'.format(''.join([choice(string.ascii_lowercase) for _ in range(5)]), role='admin'))
     db.session.add(user)
     db.session.commit()
     users.append(user)
