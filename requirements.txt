@@ -24,8 +24,7 @@ python-editor==1.0.3
 pytz==2018.5
 six==1.11.0
 SQLAlchemy==1.2.12
-## !! Could not determine repository location
-transporte==0.0.0
+-e git+git@github.com:c3loc/transporte.git@ece2c539ebfa9d9cdd810d2b97979facc0dd7c29#egg=transporte
 validate-email==1.3
 validators==0.12.2
 Werkzeug==0.14.1
