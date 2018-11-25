@@ -11,6 +11,8 @@ from jinja2 import evalcontextfilter
 from validate_email import validate_email
 
 from flask_login import login_user, logout_user, login_required, current_user
+from pprint import pprint
+from .zammad_integration import update_ticket, close_ticket
 
 import babel
 import re
@@ -120,9 +122,20 @@ def edit_transport(id=None):
 
             if id is None:
                 transport.user_id = current_user.id
-
+                ticket_is_new = True
             db.session.add(transport)
             db.session.commit()
+
+            ##
+            ## if ticket is new, update object with zammad ticket id
+            ##
+            if transport.ticket_id == None:
+                print('ticket is new')
+                transport = update_ticket(transport)
+                db.session.add(transport)
+                db.session.commit()
+            else:
+                update_ticket(transport)
 
             print(request.files)
             for file in request.files.getlist('file_upload'):
@@ -223,8 +236,13 @@ def mark_transport(mark, id=None):
             transport.done = True
         elif mark == 'cancelled':
             transport.cancelled = True
+        ##
+        ## close ticket
+        ##
+        close_ticket(transport, mark)
         db.session.add(transport)
         db.session.commit()
+
         return redirect(url_for('list_transports'))
 
     return render_template('transport_mark.html', mark=mark, transport=transport, form=form)
@@ -294,3 +312,4 @@ def inject_today():
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+

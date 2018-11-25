@@ -1,6 +1,6 @@
 APP_NAME = 'c3loc transports'
 
-DEBUG = False
+DEBUG = True
 SECRET_KEY = 'YOURSECRETKEYHERE'
 UPLOAD_DIR = 'uploads'
 
@@ -16,3 +16,9 @@ MAIL_USE_SSL = False
 MAIL_USERNAME = 'SMTP_USER'
 MAIL_PASSWORD = 'SMTP_PASS'
 MAIL_DEFAULT_SENDER = 'no-reply@YOURDOMAIN.de'
+
+
+ZAMMAD_HOST = 'zammad host'
+ZAMMAD_USER = 'user'
+ZAMMAD_PASS = 'pass'
+ZAMMAD_SECURE = True
