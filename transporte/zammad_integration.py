@@ -57,10 +57,6 @@ def update_ticket(transport_data):
     client = ZammadAPI(username=app.config['ZAMMAD_USER'], password=app.config['ZAMMAD_PASS'],
                        host=app.config['ZAMMAD_HOST'], is_secure=app.config['ZAMMAD_SECURE'])
 
-    if transport_data.time == None:
-        transport_data.time = datetime.time()
-    ### Set pseudotime if time is not set
-
     ##
     ## Create user if not exists
     ##
