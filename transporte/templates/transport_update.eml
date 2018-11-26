@@ -68,6 +68,8 @@
     </p>
     <p>
         View transport in ticketsystem:
-        <a href="{{ url_for('show_transport', id=transport.id) }}">{{ url_for('show_transport', id=transport.id, _external=True) }}</a>
+        <a href="{{ url_for('show_transport', id=transport.id, _external=True) }}">
+            {{ url_for('show_transport', id=transport.id, _external=True) }}
+        </a>
     </p>
 </div>
