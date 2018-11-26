@@ -4,11 +4,16 @@ import os
 from .transporte import app, db
 from .models import User, Transport
 from flask_login import current_user
+import datetime
 
 def close_ticket(transport_data, reason):
   client = ZammadAPI(username=app.config['ZAMMAD_USER'], password=app.config['ZAMMAD_PASS'], host=app.config['ZAMMAD_HOST'], is_secure=app.config['ZAMMAD_SECURE'])
 
   messagebody = reason
+
+  if transport_data.time == None:
+    transport_data.time = datetime.time()
+  ### Set pseudotime if time is not set
 
   ##
   ## if new helpdesk user is closing a ticket, we need to create the user in the ticket system
@@ -37,7 +42,7 @@ def close_ticket(transport_data, reason):
                 'form_id': '850048713',
                 'content_type': 'text/html'},
     'tags': '',
-    'pending_time': transport_data.date.isoformat()+transport_data.time.isoformat()+'Z',
+    'pending_time': transport_data.date.isoformat() + transport_data.time.isoformat()+'Z',
     'note': messagebody,
   }
 
@@ -46,11 +51,13 @@ def close_ticket(transport_data, reason):
 
 
 def update_ticket(transport_data):
-  if transport_data.time == None:
-    transport_data.time = datetime.datetime.now().time().isoformat()
-    ### Set pseudotime if time is not set
+
     
   client = ZammadAPI(username=app.config['ZAMMAD_USER'], password=app.config['ZAMMAD_PASS'], host=app.config['ZAMMAD_HOST'], is_secure=app.config['ZAMMAD_SECURE'])
+
+  if transport_data.time == None:
+    transport_data.time = datetime.time()
+  ### Set pseudotime if time is not set
 
   messagebody = (transport_data.organizer + '\n Transport from: ' + transport_data.location_from + ' to: ' + transport_data.location_to + '\n' +
     'date: ' + transport_data.date.isoformat() + ' time: ' + transport_data.time.isoformat() + '\n Vehicle + owner: ' + transport_data.vehicle + ', ' + transport_data.vehicle_owner + '\n Goods: ' + transport_data.goods + '\n Driver Contact: ' + 
@@ -88,7 +95,7 @@ def update_ticket(transport_data):
                   'form_id': '850048713',
                   'content_type': 'text/html'},
       'tags': '',
-      'pending_time': transport_data.date.isoformat()+'Z',
+      'pending_time': transport_data.date.isoformat() + transport_data.time.isoformat() + 'Z',
       'note': messagebody,
     }
     new_ticket = client.ticket.create(ticketTemplate)
@@ -97,10 +104,13 @@ def update_ticket(transport_data):
     ##
     ## return updated transport object for db update
     ##
-    return transport_data
+    return transport_data.ticket_id
 
   else:
     print('old')
+    if transport_data.time == None:
+      transport_data.time = datetime.time()
+      ### Set pseudotime if time is not set
     ticketTemplate = {
       'id': transport_data.ticket_id,
       'title': '[Transport] from: ' + transport_data.location_from + ' to: ' + transport_data.location_to,
@@ -119,7 +129,7 @@ def update_ticket(transport_data):
                   'form_id': '850048713',
                   'content_type': 'text/html'},
       'tags': '',
-      'pending_time': transport_data.date.isoformat()+transport_data.time.isoformat()+'Z',
+      'pending_time': transport_data.date.isoformat() + transport_data.time.isoformat() + 'Z',
       'note': messagebody,
     }
     client.ticket.update(transport_data.ticket_id, ticketTemplate)

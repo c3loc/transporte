@@ -131,7 +131,7 @@ def edit_transport(id=None):
             ##
             if transport.ticket_id == None:
                 print('ticket is new')
-                transport = update_ticket(transport)
+                transport.ticket_id = update_ticket(transport)
                 db.session.add(transport)
                 db.session.commit()
             else:
