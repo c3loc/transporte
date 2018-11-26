@@ -60,7 +60,7 @@
     </p>
     <p>
         <b>Comment</b>:
-        <pre>{{ comment }}</pre>
+        <pre>{{ transport.comment }}</pre>
     </p>
     <p>
         <br>
