@@ -29,7 +29,7 @@ owner = ['Spedition XYZ', 'CCCV', 'Sixt', 'private']
 persons = ['Fahrer XYZ, 0123456789', 'cpunkt, kennste', 'LOC', 'Nick Fahrer']
 goods = ['Congress is coming, LOC Crew needs to be shipped! Defrosting initialized! Cryo capsules in wake up mode.',
          'Beverages', 'Popcorn', 'Merch', 'Everything!',
-         '* Gitterboxen\n* Bauzaun\n* lauter brandschutzrelevanter Kram']
+         '* Gitterboxen\r\n* Bauzaun\r\n* lauter brandschutzrelevanter Kram']
 comments = ['What a greate comment!\nMultiline!\nGreat line!\n\nGreat!', 'Whoooohooo', 'Yipp yipp yipp',
             '<script>alert(1);</script>']
 
