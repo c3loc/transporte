@@ -34,8 +34,8 @@ comments = ['What a greate comment!\nMultiline!\nGreat line!\n\nGreat!', 'Whoooo
             '<script>alert(1);</script>']
 
 foo = Transport(user_id=choice(users).id, organizer=choice(organizers), needs_organization=randint(0, 1),
-                location_from=choice(addresses),
-                location_to=choice(addresses),
+                origin=choice(addresses),
+                destination=choice(addresses),
                 date=date(year=date.today().year, month=date.today().month, day=date.today().day),
                 time=time(hour=randint(0, 23),
                           minute=randint(0, 59)), vehicle=choice(vehicles),
@@ -49,8 +49,8 @@ db.session.commit()
 
 for _ in range(10):
     foo = Transport(user_id=choice(users).id, organizer=choice(organizers), needs_organization=randint(0, 1),
-                    location_from=choice(addresses),
-                    location_to=choice(addresses),
+                    origin=choice(addresses),
+                    destination=choice(addresses),
                     date=date(year=2018, month=randint(date.today().month - 1, 12), day=randint(15, 26)),
                     time=time(hour=randint(0, 23),
                               minute=randint(0, 59)), vehicle=choice(vehicles),

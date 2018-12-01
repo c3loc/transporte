@@ -21,7 +21,7 @@ def close_ticket(transport, reason):
 
     ticketTemplate = {
         'id': transport.ticket_id,
-        'title': '[Transport] from: ' + transport.location_from + ' to: ' + transport.location_to,
+        'title': '[Transport] from: ' + transport.origin + ' to: ' + transport.destination,
         'group_id': app.config['ZAMMAD_GROUP_ID'],
         'customer_id': zammad_user['id'],
         'state_id': '4',
@@ -52,7 +52,7 @@ def update_ticket(transport):
     messagebody = render_template('email_transport_update.html', transport=transport)
 
     ticketTemplate = {
-        'title': '[Transport] from: ' + transport.location_from + ' to: ' + transport.location_to,
+        'title': '[Transport] from: ' + transport.origin + ' to: ' + transport.destination,
         'group_id': app.config['ZAMMAD_GROUP_ID'],
         'customer_id': zammad_user['id'],
         'state_id': '3' if transport.needs_organization else '2',
