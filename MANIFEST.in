@@ -1,4 +1,4 @@
 graft transporte/templates
 graft transporte/static
 graft transporte/uploads
-graft trandporte/migrations
+include transporte/config.cfg
