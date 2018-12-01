@@ -17,6 +17,7 @@ VehicleTypes = {
     '7.5t': '7.5t',
     '18t': '18t',
     '40t': '40t',
+    'truck': 'Truck (uknnown size)'
 }
 
 Roles = {
