@@ -22,3 +22,4 @@ ZAMMAD_HOST = 'zammad host'
 ZAMMAD_USER = 'user'
 ZAMMAD_PASS = 'pass'
 ZAMMAD_SECURE = True
+ZAMMAD_GROUP_ID = 1

@@ -11,7 +11,6 @@ from jinja2 import evalcontextfilter
 from validate_email import validate_email
 
 from flask_login import login_user, logout_user, login_required, current_user
-from pprint import pprint
 from .zammad_integration import update_ticket, close_ticket
 
 import babel
@@ -122,7 +121,6 @@ def edit_transport(id=None):
 
             if id is None:
                 transport.user_id = current_user.id
-                ticket_is_new = True
             db.session.add(transport)
             db.session.commit()
 
@@ -130,7 +128,6 @@ def edit_transport(id=None):
             ## if ticket is new, update object with zammad ticket id
             ##
             if transport.ticket_id == None:
-                print('ticket is new')
                 transport.ticket_id = update_ticket(transport)
                 db.session.add(transport)
                 db.session.commit()
@@ -236,10 +233,13 @@ def mark_transport(mark, id=None):
             transport.done = True
         elif mark == 'cancelled':
             transport.cancelled = True
+            
         ##
         ## close ticket
         ##
-        close_ticket(transport, mark)
+        if transport.ticket_id:
+            close_ticket(transport, mark)
+
         db.session.add(transport)
         db.session.commit()
 
