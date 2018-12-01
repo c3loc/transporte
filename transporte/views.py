@@ -134,7 +134,6 @@ def edit_transport(id=None):
             else:
                 update_ticket(transport)
 
-            print(request.files)
             for file in request.files.getlist('file_upload'):
                 file_name = secure_filename(file.filename)
                 upload_dir = os.path.join(app.config['UPLOAD_DIR'], str(transport.id))
@@ -172,7 +171,6 @@ def list_transports():
     filterform = TransportFilterForm(day=request.args.get('day'))
     filterform.day.choices = [('None', 'Filter by date')] + [(date[0], date[0]) for date in dates]
 
-    print(filterform.validate())
     if filterform.day.data != 'None':
         transportlist = transportlist.filter(Transport.date == parser.parse(filterform.day.data).date())
 
