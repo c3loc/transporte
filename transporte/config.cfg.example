@@ -1,6 +1,6 @@
 APP_NAME = 'c3loc transports'
 
-DEBUG = True
+DEBUG = False
 SECRET_KEY = 'YOURSECRETKEYHERE'
 UPLOAD_DIR = 'uploads'
 
