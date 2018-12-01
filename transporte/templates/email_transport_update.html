@@ -1,0 +1,75 @@
+<div>
+    <p>
+        Ohai,
+    </p>
+    <p>
+        <br>
+    </p>
+    <p>
+        a transport has been added / updated:
+    </p>
+    <p>
+        <br>
+    </p>
+
+{% if transport.needs_organization %}
+    <p>
+        <b>!!! Transport needs organization !!!</b>
+    </p>
+    <p>
+        <br>
+    </p>
+{% endif %}
+
+    <p>
+        <b>Date</b>: {{ transport.date|datetime }} {{ transport.time if transport.time is not none }}<br>
+        <b>Organizer</b>: {{ transport.organizer }}<br>
+        <b>Vehicle</b>: {{ vehicletypes[transport.vehicle] }}<br>
+        <b>Spedition</b>: {{ transport.vehicle_owner}}<br>
+    </p>
+    <p>
+        <br>
+    </p>
+    <p>
+        <b>Origin</b>:
+        <pre>{{ transport.location_from }}</pre>
+    </p>
+    <p>
+        <br>
+    </p>
+    <p>
+        <b>Destination</b>:<br>
+        <pre>{{ transport.location_to }}</pre>
+    </p>
+    <p>
+        <br>
+    </p>
+    <p>
+        <b>Driver Contact</b>:
+        <pre>{{ transport.driver_contact }}</pre>
+    </p>
+    <p>
+        <br>
+    </p>
+    <p>
+        <b>Orga Contact</b>:
+        <pre>{{ transport.orga_contact }}</pre>
+    </p>
+    <p>
+        <br>
+    </p>
+    <p>
+        <b>Comment</b>:
+        <pre>{{ transport.comment }}</pre>
+    </p>
+    <p>
+        <br>
+        <br>
+    </p>
+    <p>
+        View transport in ticketsystem:
+        <a href="{{ url_for('show_transport', id=transport.id, _external=True) }}">
+            {{ url_for('show_transport', id=transport.id, _external=True) }}
+        </a>
+    </p>
+</div>

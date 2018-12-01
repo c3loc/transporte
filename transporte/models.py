@@ -52,6 +52,7 @@ class User(UserMixin, db.Model):
 
 class Transport(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    ticket_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     organizer = db.Column(db.String(256), nullable=False)
     needs_organization = db.Column(db.Boolean, default=False, nullable=False)

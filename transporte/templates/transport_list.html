@@ -20,6 +20,7 @@
         <th scope="col"><i class="fas exclamation-triangle"></i></th>
         <th scope="col">Date</th>
         <th scope="col">Time</th>
+        <th scope="col">Ticket</th>
         <th scope="col">Origin</th>
         <th scope="col">Destination</th>
         <th scope="col">Vehicle</th>
@@ -43,6 +44,7 @@
     <td>{% if transport.needs_organization %}<i class="fas fa-exclamation-triangle"></i>{% endif %}</td>
     <td>{{ transport.date }}</td>
     <td>{{ transport.time }}</td>
+    <td><a href="https://tickets.c3loc.de/#ticket/zoom/{{ transport.ticket_id }}" target="_blank">#{{ transport.ticket_id }}</a></td>
     <td>{{ transport.location_from }}</td>
     <td>{{ transport.location_to }}</td>
     <td>{{ vehicletypes[transport.vehicle] }}</td>
