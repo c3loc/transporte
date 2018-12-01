@@ -54,6 +54,3 @@ class RoleForm(FlaskForm):
 
 class TransportFilterForm(FlaskForm):
     day = SelectField('Day', choices=[])
-    open = BooleanField('open')
-    done = BooleanField('done')
-    cancelled = BooleanField('cancelled')

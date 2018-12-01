@@ -8,9 +8,6 @@
 <h1 class="page-header">Transports</h1>
 <form method="GET">
     {{ filterform.day(**{'onchange': 'this.form.submit()'}) }}
-    {{ filterform.open.label }} {{ filterform.open }}
-    {{ filterform.done.label }} {{ filterform.done }}
-    {{ filterform.cancelled.label }} {{ filterform.cancelled }}
 </form>
 
 <table class="table" id="transportlist">

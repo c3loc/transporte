@@ -162,20 +162,7 @@ def edit_transport(id=None):
 @app.route('/transports/list')
 @login_required
 def list_transports():
-    sortables = {
-        'date': Transport.date,
-        'user_id': Transport.user_id,
-        'organizer': Transport.organizer,
-        'location_from': Transport.location_from,
-        'location_to': Transport.location_to
-    }
-
-    sort = request.args.get('sort')
-
-    if sort not in sortables.keys():
-        sort = 'date'
-
-    transportlist = Transport.query.order_by(sortables[sort])
+    transportlist = Transport.query
 
     if not current_user.role in ['helpdesk', 'admin']:
         transportlist = transportlist.filter(Transport.user_id == current_user.id)
