@@ -4,6 +4,9 @@ Transport planing tool
 ## python
 use python3!
 
+## database
+for production use it is recommended to use mysql or postgresql.
+
 ## venv
 use venvs!
 
