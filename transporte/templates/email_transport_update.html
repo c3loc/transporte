@@ -25,7 +25,7 @@
         <b>Date</b>: {{ transport.date|datetime }} {{ transport.time if transport.time is not none }}<br>
         <b>Organizer</b>: {{ transport.organizer }}<br>
         <b>Vehicle</b>: {{ vehicletypes[transport.vehicle] }}<br>
-        <b>Spedition</b>: {{ transport.spedition }}<br>
+        <b>Spedition</b>: {{ transport.vehicle_owner}}<br>
     </p>
     <p>
         <br>
