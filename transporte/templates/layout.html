@@ -50,9 +50,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('list_transports') }}">List Transports</a>
             </li>
+            {% if current_user.role in ['admin'] %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('list_users') }}">List Users</a>
             </li>
+            {% endif %}
         </ul>
 
         <ul class="navbar-nav">

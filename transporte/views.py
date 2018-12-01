@@ -5,7 +5,7 @@ from .forms import *
 
 import datetime
 from flask import request, g, render_template, session, url_for, redirect, flash, Markup, escape, \
-    send_from_directory
+    send_from_directory, abort
 from jinja2 import evalcontextfilter
 
 from validate_email import validate_email
@@ -236,6 +236,9 @@ def mark_transport(mark, id=None):
 @app.route('/users/list')
 @login_required
 def list_users():
+    if not (current_user.role in ['admin']):
+        abort(404)
+
     users = User.query.all()
 
     return render_template('user_list.html', userlist=users)
@@ -244,6 +247,9 @@ def list_users():
 @app.route('/users/show/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_user(id=None):
+    if not (current_user.role in ['admin']):
+        abort(404)
+
     user = User.query.get(id)
     roleform = RoleForm(obj=user)
 
