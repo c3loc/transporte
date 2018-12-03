@@ -29,7 +29,9 @@
 </table>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#userlist').DataTable();
+        $('#userlist').DataTable({
+            "stateSave": true,
+        } );
     });
 </script>
 {% endblock  %}
