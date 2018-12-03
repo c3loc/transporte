@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% from "_formhelper.html" import trim %}
 
 {% block meta %}
 <meta http-equiv="refresh" content="300;">
@@ -46,9 +47,9 @@
     <td>{{ transport.destination }}</td>
     <td>{{ vehicletypes[transport.vehicle] }}</td>
     <td>{{ transport.organizer }}</td>
-    <td>{{ transport.goods }}</td>
+    <td>{{ trim(transport.goods, 30) }}</td>
     <td>{{ transport.user.login|safe }}</td>
-    <td>{{ transport.comment }}</td>
+    <td>{{ trim(transport.comment, 30) }}</td>
     <td>
         {% if not (transport.done or transport.cancelled) or current_user.role in ['helpdesk', 'admin'] %}
         <div class="pull-right">

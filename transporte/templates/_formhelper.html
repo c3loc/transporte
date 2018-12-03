@@ -21,3 +21,7 @@
     {% endif %}
 </div>
 {% endmacro %}
+
+{% macro trim(field, length) %}
+{{ field[:length] }}{% if field|length > length %} ...{% endif %}
+{% endmacro %}
