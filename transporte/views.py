@@ -166,7 +166,7 @@ def list_transports():
     if not current_user.role in ['helpdesk', 'admin']:
         transportlist = transportlist.filter(Transport.user_id == current_user.id)
 
-    dates = transportlist.with_entities(Transport.date).distinct().all()
+    dates = transportlist.with_entities(Transport.date).distinct().order_by(Transport.date).all()
 
     filterform = TransportFilterForm(day=request.args.get('day'))
     filterform.day.choices = [('None', 'Filter by date')] + [(date[0], date[0]) for date in dates]
