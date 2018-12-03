@@ -85,8 +85,8 @@
             {% endwith %}
 
             {% block content %}
-            <h1 class="page-header">Ohai!</h1>
 
+            <h1 class="page-header">Ohai!</h1>
             <div class="row">
                 <div class="offset-sm-1 col-sm-10">
                     <p class="lead">Welcome to our awesome transports planning system!</p>
@@ -110,6 +110,28 @@
             </div>
             {% endfor %}
             {% endif %}
+
+            <h2>How it works</h2>
+            <div class="row">
+                <div class="offset-1 col-sm-10">
+                    <p class="lead">
+                        Please enter your transport details in the form provided. You don't need to fill all fields, the
+                        submission process will tell you if a field is required.
+                        Please leave unknown or not yet know fields empty (apart from the required ones). Transport details can
+                        be changed later. You will be notified by email if something is changed.
+                    </p>
+                    <p class="lead">Please dont hesitate to contact us by <a href="mailto:35c3@c3loc.de">email</a> if you have any questions or need help.</p>
+                </div>
+            </div>
+
+            <h2>Information</h2>
+            <div class="row">
+                <div class="offset-1 col-sm-10">
+                    <p class="lead">
+                        For more information visit: <a href="https://c3loc.de">https://c3loc.de</a>
+                    </p>
+                </div>
+            </div>
             {% endblock %}
         </div>
     </div>
