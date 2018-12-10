@@ -78,9 +78,13 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#transportlist').DataTable( {
-            "order": [[2, "asc"]],
-            "stateSave": true,
-            "responsive": true
+            order: [[2, "asc"]],
+            stateSave: true,
+            responsive: true,
+            columnDefs: [{
+                targets: [2],
+                orderData: [2, 3]
+            }]
         } );
     });
 </script>
