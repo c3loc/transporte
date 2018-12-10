@@ -80,11 +80,14 @@
         $('#transportlist').DataTable( {
             order: [[2, "asc"]],
             stateSave: true,
-            responsive: true,
-            columnDefs: [{
+            /* responsive: true, */
+            columnDefs: [ {
                 targets: [2],
                 orderData: [2, 3]
-            }]
+            } ],
+            rowGroup: {
+                dataSrc: 2
+            }
         } );
     });
 </script>
