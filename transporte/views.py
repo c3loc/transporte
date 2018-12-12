@@ -1,4 +1,3 @@
-
 from .transporte import app, db, login_manager
 from .models import *
 from .forms import *
@@ -52,7 +51,7 @@ def index():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-#@limiter.limit('10/hour')
+# @limiter.limit('10/hour')
 def login():
     loginform = LoginForm()
 
@@ -218,7 +217,7 @@ def mark_transport(mark, id=None):
             transport.done = True
         elif mark == 'cancelled':
             transport.cancelled = True
-            
+
         ##
         ## close ticket
         ##
@@ -268,8 +267,14 @@ def edit_user(id=None):
 
 @app.route('/uploads/<int:transport_id>/<path:filename>')
 def uploaded_file(transport_id, filename):
+    transport = Transport.query.get(transport_id)
+
+    if transport is None or not (transport.user_id == current_user.id or current_user.role in ['helpdesk', 'admin']):
+        abort(404)
+
     return send_from_directory(os.path.join(app.config['UPLOAD_DIR'], str(transport_id)),
                                filename)
+
 
 def format_datetime(value):
     format = "EE, dd.MM.y"
@@ -300,7 +305,7 @@ def inject_global_template_vars():
 def inject_today():
     return dict(today=datetime.date.today())
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
