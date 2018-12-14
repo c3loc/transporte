@@ -47,7 +47,7 @@
     <td>{{ transport.destination }}</td>
     <td>{{ vehicletypes[transport.vehicle] }}</td>
     <td>{{ transport.organizer }}</td>
-    <td>{{ trim(transport.goods, 30) }}</td>
+    <td>{{ trim(transport.goods, 30)|nl2br }}</td>
     <td>{{ transport.user.login|safe }}</td>
     <td>{{ trim(transport.comment, 30) }}</td>
     <td>
