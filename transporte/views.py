@@ -56,7 +56,7 @@ def login():
     loginform = LoginForm()
 
     if loginform.validate_on_submit():
-        email = loginform.login.data
+        email = loginform.login.data.lower()
         if app.config['DEBUG'] or validate_email(email, check_mx=True):
             user = User.query.filter(User.login == email).first()
 
