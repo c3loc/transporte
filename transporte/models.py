@@ -9,6 +9,8 @@ from flask_mail import Message
 from itsdangerous import URLSafeTimedSerializer as Serializer
 from itsdangerous import BadSignature, SignatureExpired
 
+from DNS.Base import TimeoutError as DNSTimeoutError
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,13 +27,18 @@ class User(UserMixin, db.Model):
                 Markup('<b>DEBUG:</b> <a href={url}>{url}</a>'.format(
                     url=url_for('login_with_token', token=token, _external=True))),
                 'warning')
-            return
+            return token
 
         # send login email
         msg = Message('Ohai!', recipients=[self.login])
         msg.body = 'Here is your login link: {}'.format(url_for('login_with_token', token=token, _external=True))
 
-        mail.send(msg)
+        try:
+            mail.send(msg)
+        except DNSTimeoutError:
+            return None
+
+        return token
 
     @staticmethod
     def verify_login_token(token):

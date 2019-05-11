@@ -67,9 +67,11 @@ def login():
                 db.session.commit()
 
             # create token
-            user.create_token()
-
-            flash('Check your inbox!')
+            token = user.create_token()
+            if token is not None:
+                flash('Check your inbox!')
+            else:
+                loginform.login.errors.append('Error creating token!')
         else:
             loginform.login.errors.append('Please enter valid email address!')
 
