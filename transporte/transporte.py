@@ -31,6 +31,18 @@ from .views import *
 
 login_manager.user_loader(load_user)
 
+if app.config['DEBUG']:
+    import logging
+    import http.client
+
+    http.client.HTTPConnection.debuglevel = 1
+
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.DEBUG)
+    requests_log = logging.getLogger("requests.packages.urllib3")
+    requests_log.setLevel(logging.DEBUG)
+    requests_log.propagate = True
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', debug=app.config['DEBUG'])
