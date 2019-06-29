@@ -38,8 +38,8 @@ class TransportForm(FlaskForm):
     origin = TextAreaField('Origin', validators=[DataRequired()])
     destination = TextAreaField('Destination', validators=[DataRequired()])
     date = DateField('Date', validators=[DataRequired(), DateRange(
-        min=max(datetime.date.today(), datetime.date(year=2018, month=12, day=14)),
-        max=datetime.date(year=2019, month=1, day=6))], widget=widgets_html5.DateInput())
+        min=max(datetime.date.today(), datetime.date(year=2019, month=8, day=1)),
+        max=datetime.date(year=2019, month=9, day=5))], widget=widgets_html5.DateInput())
     time = TimeField('ETA', validators=[Optional()], widget=widgets_html5.TimeInput())
     vehicle = SelectField('Vehicle', validators=[DataRequired()], choices=[('', '')] + list(VehicleTypes.items()))
     goods = TextAreaField('Goods', validators=[DataRequired()])
