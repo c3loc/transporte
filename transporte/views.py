@@ -134,18 +134,19 @@ def edit_transport(id=None):
                 update_ticket(transport)
 
             for file in request.files.getlist('file_upload'):
-                file_name = secure_filename(file.filename)
-                upload_dir = os.path.join(app.config['UPLOAD_DIR'], str(transport.id))
-                file_path = os.path.join(upload_dir, file_name)
+                if file.filename:
+                    file_name = secure_filename(file.filename)
+                    upload_dir = os.path.join(app.config['UPLOAD_DIR'], str(transport.id))
+                    file_path = os.path.join(upload_dir, file_name)
 
-                if not os.path.isdir(os.path.join(app.root_path, upload_dir)):
-                    os.mkdir(os.path.join(app.root_path, upload_dir))
+                    if not os.path.isdir(os.path.join(app.root_path, upload_dir)):
+                        os.mkdir(os.path.join(app.root_path, upload_dir))
 
-                file.save(os.path.join(app.root_path, file_path))
+                    file.save(os.path.join(app.root_path, file_path))
 
-                f = File(transport_id=transport.id, name=file_name, path=file_path)
-                db.session.add(f)
-                db.session.commit()
+                    f = File(transport_id=transport.id, name=file_name, path=file_path)
+                    db.session.add(f)
+                    db.session.commit()
 
             flash('Saved')
             if id is None:

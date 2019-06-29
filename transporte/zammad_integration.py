@@ -25,13 +25,13 @@ def close_ticket(transport, reason):
         'group_id': app.config['ZAMMAD_GROUP_ID'],
         'customer_id': zammad_user['id'],
         'state_id': '4',
-        'article': {'from': '35c3',
+        'article': {'from': 'camp19',
                     'to': transport.user.login,
                     'body': messagebody,
                     'type_id': 1,
                     'content_type': 'text/html'},
-        'note': messagebody,
-    }
+        'tags': 'transport',
+        }
 
     client.ticket.update(transport.ticket_id, ticketTemplate)
 
@@ -56,15 +56,15 @@ def update_ticket(transport):
         'group_id': app.config['ZAMMAD_GROUP_ID'],
         'customer_id': zammad_user['id'],
         'state_id': '3' if transport.needs_organization else '2',
-        'article': {'from': '35c3',
+        'article': {'from': 'camp19',
                     'to': transport.user.login,
                     'body': messagebody,
                     'type_id': 1,
                     'content_type': 'text/html'},
         'tags': 'transport',
         'pending_time': '{}Z'.format(datetime.utcnow().isoformat()),
-        'note': messagebody,
     }
+
 
     ##
     ## Create a new ticket, if the transport has no ticket_id in the db
