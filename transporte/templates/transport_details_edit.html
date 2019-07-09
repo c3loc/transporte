@@ -43,6 +43,13 @@
         {{ render_form_group(render_field(transportform.file_upload, 12)) }}
 
         <div class="form-group col-sm-12">
+            <small id="fileUploadHelpBlock" class="form-text text-muted">
+                Files are not stored if the form is invalid, please make sure you upload them again if there were errors
+                in the form.
+            </small>
+        </div>
+
+        <div class="form-group col-sm-12">
             <ul>
                 {% for file in transport.files %}
                 <li>

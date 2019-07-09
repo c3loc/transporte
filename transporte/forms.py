@@ -3,10 +3,13 @@ import datetime
 
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
-from wtforms import StringField, DateField, SelectField, TextAreaField, HiddenField, TimeField
+from wtforms import StringField, SelectField, TextAreaField
 from wtforms.fields import BooleanField
+from wtforms.fields.html5 import TimeField
 from wtforms.validators import *
-from wtforms.widgets import html5 as widgets_html5
+
+# DateField from wtforms_components supports min/max depending on DateRange
+from wtforms_components import DateField
 from wtforms_components import DateRange
 
 
@@ -39,8 +42,8 @@ class TransportForm(FlaskForm):
     destination = TextAreaField('Destination', validators=[DataRequired()])
     date = DateField('Date', validators=[DataRequired(), DateRange(
         min=max(datetime.date.today(), datetime.date(year=2019, month=8, day=1)),
-        max=datetime.date(year=2019, month=9, day=5))], widget=widgets_html5.DateInput())
-    time = TimeField('ETA', validators=[Optional()], widget=widgets_html5.TimeInput())
+        max=datetime.date(year=2019, month=9, day=5))])
+    time = TimeField('ETA', validators=[Optional()])
     vehicle = SelectField('Vehicle', validators=[DataRequired()], choices=[('', '')] + list(VehicleTypes.items()))
     goods = TextAreaField('Goods', validators=[DataRequired()])
     vehicle_owner = StringField('Vehicle Owner')
@@ -48,7 +51,6 @@ class TransportForm(FlaskForm):
     driver_contact = TextAreaField('Driver Contact Person / Details')
     comment = TextAreaField('Comment')
     file_upload = FileField('Files', render_kw={'multiple': True})
-
 
 class RoleForm(FlaskForm):
     role = SelectField('Role', validators=[DataRequired()], choices=list(Roles.items()))
