@@ -7,7 +7,7 @@ from flask import request, g, render_template, session, url_for, redirect, flash
     send_from_directory, abort
 from jinja2 import evalcontextfilter
 
-from validate_email import validate_email
+from email_validator import validate_email
 
 from flask_login import login_user, logout_user, login_required, current_user
 from .zammad_integration import update_ticket, close_ticket
@@ -57,21 +57,28 @@ def login():
 
     if loginform.validate_on_submit():
         email = loginform.login.data.lower()
-        if app.config['DEBUG'] or validate_email(email, check_mx=True):
-            user = User.query.filter(User.login == email).first()
 
-            if user is None:
-                # create user
-                user = User(login=email)
-                db.session.add(user)
-                db.session.commit()
+        try:
+            v = validate_email(email)
+            email = v['email'] # replace with normalized form
 
-            # create token
-            user.create_token()
+        except Exception as e:
+            loginform.login.errors.append(str(e))
 
-            flash('Check your inbox!')
-        else:
-            loginform.login.errors.append('Please enter valid email address!')
+            return render_template('login.html', loginform=loginform)
+
+        user = User.query.filter(User.login == email).first()
+
+        if user is None:
+            # create user
+            user = User(login=email)
+            db.session.add(user)
+            db.session.commit()
+
+        # create token
+        user.create_token()
+
+        flash('Check your inbox!')
 
     return render_template('login.html', loginform=loginform)
 
