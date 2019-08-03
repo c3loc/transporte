@@ -156,8 +156,10 @@ def edit_transport(id=None):
                     db.session.commit()
 
             flash('Saved')
+
             if id is None:
                 return redirect(url_for('edit_transport', id=transport.id))
+
     else:
         transportform = TransportForm()
         flash('Not authorized to edit this transport!')

@@ -3,7 +3,7 @@ import datetime
 
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
-from wtforms import StringField, SelectField, TextAreaField
+from wtforms import StringField, SelectField, TextAreaField, SubmitField
 from wtforms.fields import BooleanField
 from wtforms.fields.html5 import TimeField
 from wtforms.validators import *
@@ -51,6 +51,8 @@ class TransportForm(FlaskForm):
     driver_contact = TextAreaField('Driver Contact Person / Details')
     comment = TextAreaField('Comment')
     file_upload = FileField('Files', render_kw={'multiple': True})
+    save = SubmitField('Save')
+    saveasnew = SubmitField('Save as new')
 
 class RoleForm(FlaskForm):
     role = SelectField('Role', validators=[DataRequired()], choices=list(Roles.items()))
