@@ -40,7 +40,7 @@
     {% endif %}
     <th scope="row"><a href="{{ url_for('show_transport', id=transport.id) }}">{{ transport.id }}</a></th>
     <td>{% if transport.needs_organization %}<i class="fas fa-exclamation-triangle"></i>{% endif %}</td>
-    <td class="text-nowrap">{{ transport.date | datetime }}</td>
+    <td class="text-nowrap" data-order="{{ transport.date.strftime('%s') }}">{{ transport.date | datetime }}</td>
     <td class="text-nowrap">{{ transport.time.strftime('%H:%M') if transport.time is not none }}</td>
     <td><a href="https://tickets.c3loc.de/#ticket/zoom/{{ transport.ticket_id }}" target="_blank">#{{ transport.ticket_id }}</a></td>
     <td>{{ transport.origin }}</td>
