@@ -1,6 +1,6 @@
 from transporte import transporte
 from transporte.models import *
-from datetime import date, time
+from datetime import date, time, timedelta
 from random import randint, choice
 import string
 
@@ -33,25 +33,25 @@ goods = ['Congress is coming, LOC Crew needs to be shipped! Defrosting initializ
 comments = ['What a greate comment!\nMultiline!\nGreat line!\n\nGreat!', 'Whoooohooo', 'Yipp yipp yipp',
             '<script>alert(1);</script>']
 
-foo = Transport(user_id=choice(users).id, organizer=choice(organizers), needs_organization=randint(0, 1),
-                origin=choice(addresses),
-                destination=choice(addresses),
-                date=date(year=date.today().year, month=date.today().month, day=date.today().day),
-                time=time(hour=randint(0, 23),
-                          minute=randint(0, 59)), vehicle=choice(vehicles),
-                goods=choice(goods),
-                vehicle_owner=choice(owner),
-                driver_contact=choice(persons), orga_contact=choice(persons),
-                comment=choice(comments))
-db.session.add(foo)
-db.session.commit()
-
+for i in range(0,2):
+    foo = Transport(user_id=choice(users).id, organizer=choice(organizers), needs_organization=randint(0, 1),
+                    origin=choice(addresses),
+                    destination=choice(addresses),
+                    date=date.today()-timedelta(days=i),
+                    time=time(hour=randint(0, 23),
+                              minute=randint(0, 59)), vehicle=choice(vehicles),
+                    goods=choice(goods),
+                    vehicle_owner=choice(owner),
+                    driver_contact=choice(persons), orga_contact=choice(persons),
+                    comment=choice(comments))
+    db.session.add(foo)
+    db.session.commit()
 
 for _ in range(10):
     foo = Transport(user_id=choice(users).id, organizer=choice(organizers), needs_organization=randint(0, 1),
                     origin=choice(addresses),
                     destination=choice(addresses),
-                    date=date(year=2018, month=randint(date.today().month - 1, 12), day=randint(15, 26)),
+                    date=date.today()+timedelta(days=randint(0, 31)),
                     time=time(hour=randint(0, 23),
                               minute=randint(0, 59)), vehicle=choice(vehicles),
                     goods=choice(goods),
