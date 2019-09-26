@@ -20,12 +20,16 @@ class User(UserMixin, db.Model):
         s = Serializer(app.config['SECRET_KEY'])
         token = s.dumps({'id': self.id})
 
+        return token
+
+    def mail_token(self):
+        token = self.create_token()
         if app.config['DEBUG']:
             flash(
                 Markup('<b>DEBUG:</b> <a href={url}>{url}</a>'.format(
                     url=url_for('login_with_token', token=token, _external=True))),
                 'warning')
-            return
+        return
 
         # send login email
         msg = Message('Ohai!', recipients=[self.login])

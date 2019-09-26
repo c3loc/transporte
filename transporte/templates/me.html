@@ -1,0 +1,8 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Itse meee, {{ current_user.login }}</h1>
+
+<h2>Login with mobile device</h2>
+<img src=" {{ qrcode(url_for('login_with_token', token=token, _external=True)) }}" />
+{% endblock %}
