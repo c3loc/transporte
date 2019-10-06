@@ -76,7 +76,7 @@ def login():
             db.session.commit()
 
         # create token
-        user.create_token()
+        user.mail_token()
 
         flash('Check your inbox!')
 
@@ -273,6 +273,14 @@ def edit_user(id=None):
         flash('Saved')
 
     return render_template('user_details.html', user=user, roleform=roleform)
+
+
+@app.route('/me', methods=['GET'])
+@login_required
+def me():
+    token = current_user.create_token()
+    print('foo')
+    return render_template('me.html', token=token)
 
 
 @app.route('/uploads/<int:transport_id>/<path:filename>')

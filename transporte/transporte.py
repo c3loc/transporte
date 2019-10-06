@@ -8,6 +8,8 @@ from flask_mail import Mail
 
 from flask_login import LoginManager
 
+from flask_qrcode import QRcode
+
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
@@ -20,6 +22,8 @@ db = SQLAlchemy(app)
 limiter = Limiter(app, key_func=get_remote_address)
 
 mail = Mail(app)
+
+QRcode(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
