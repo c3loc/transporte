@@ -7,9 +7,10 @@
 
 {% block content %}
 <h1 class="page-header">Transports</h1>
-<form method="GET">
+<form method="GET" style="float: left;">
     {{ filterform.day(**{'onchange': 'this.form.submit()'}) }}
 </form>
+<label style="margin-left: 20px;"><input type="checkbox" id="hideDone" /> hide done</label>
 
 <table class="table table-sm" style="font-size: 0.9rem" id="transportlist">
     <thead>
@@ -26,7 +27,7 @@
         <th scope="col">Goods</th>
         <th scope="col">User</th>
         <th scope="col">Comment</th>
-        <th scope="col"></th>
+        <th scope="col" data-orderable="false"></th>
     </tr>
     </thead>
     <tbody>
@@ -50,7 +51,7 @@
     <td>{{ trim(transport.goods, 50)|nl2br }}</td>
     <td>{{ transport.user.login|safe }}</td>
     <td>{{ trim(transport.comment, 30) }}</td>
-    <td>
+    <td data-filter="{{ 'closed' if transport.done or transport.cancelled else 'open' }}">
         {% if not (transport.done or transport.cancelled) or current_user.role in ['helpdesk', 'admin'] %}
         <div class="pull-right">
             <a href="{{ url_for('edit_transport', id=transport.id) }}"
@@ -76,8 +77,10 @@
 </table>
 
 <script type="text/javascript">
+    var table;
+
     $(document).ready(function () {
-        $('#transportlist').DataTable( {
+        table = $('#transportlist').DataTable( {
             order: [[2, "asc"]],
             stateSave: true,
             responsive: true,
@@ -85,7 +88,24 @@
                 targets: [2],
                 orderData: [2, 3]
             }]
-        } );
+        });
+
+        $('#hideDone').on('change', function() {
+            localStorage.setItem('hideDone', $(this).is(':checked'));
+            if ($(this).is(':checked')) {
+                $.fn.dataTable.ext.search.push(
+                    function(settings, data, dataIndex) {
+                        return data[12] == "open";
+                    });
+            } else {
+                $.fn.dataTable.ext.search.pop();
+            }
+            table.draw()
+        });
+
+        if (localStorage.getItem('hideDone') === "true") {
+            $('#hideDone').click();
+        }
     });
 </script>
 {% endblock  %}
