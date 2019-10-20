@@ -305,9 +305,6 @@ def delete_address(id):
     address = Address.query.get(id)
 
     if address is None or current_user.id is not address.user_id or not current_user.role in ['admin']:
-        print(address)
-        print(current_user.id)
-        print(current_user.role)
         abort(404)
 
     form = FlaskForm()
