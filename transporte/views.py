@@ -164,7 +164,15 @@ def edit_transport(id=None):
         transportform = TransportForm()
         flash('Not authorized to edit this transport!')
 
-    return render_template('transport_details_edit.html', transportform=transportform, transport=transport)
+    addresslist = Address.query
+
+    if current_user.role not in ['admin', 'helpdesk']:
+        addresslist = addresslist.filter(Address.public == True)
+
+    addresslist = addresslist.all()
+
+    return render_template('transport_details_edit.html', transportform=transportform, transport=transport,
+                           addresslist=addresslist)
 
 
 @app.route('/transports/list')
@@ -240,6 +248,77 @@ def mark_transport(mark, id=None):
         return redirect(url_for('list_transports'))
 
     return render_template('transport_mark.html', mark=mark, transport=transport, form=form)
+
+
+@app.route('/addresses/list')
+@login_required
+def list_addresses():
+    if not (current_user.role in ['helpdesk', 'admin']):
+        abort(404)
+
+    addresses = Address.query.all()
+
+    return render_template('address_list.html', addresslist=addresses)
+
+
+@app.route('/addresses/add', defaults={'id': None}, methods=['GET', 'POST'])
+@app.route('/addresses/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_address(id=None):
+    if not (current_user.role in ['helpdesk', 'admin']):
+        abort(404)
+
+    if id is not None:
+        address = Address.query.get(id)
+
+        if not (current_user.id == address.user_id or current_user.role in ['helpdesk', 'admin']):
+            address = None
+    else:
+        address = Address()
+
+    if address is not None:
+        addressform = AddressForm(obj=address)
+
+        if addressform.validate_on_submit():
+            addressform.populate_obj(address)
+
+            if id is None:
+                address.user_id = current_user.id
+            db.session.add(address)
+            db.session.commit()
+
+            flash('Saved!')
+
+            if id is None:
+                return redirect(url_for('edit_address', id=address.id))
+
+    else:
+        addressform = AddressForm()
+        flash('Not authorized to edit this address!')
+
+    return render_template('address_edit.html', addressform=addressform, address=address)
+
+
+@app.route('/addresses/del/<int:id>', methods=['GET', 'POST'])
+@login_required
+def delete_address(id):
+    address = Address.query.get(id)
+
+    if address is None or current_user.id is not address.user_id or not current_user.role in ['admin']:
+        print(address)
+        print(current_user.id)
+        print(current_user.role)
+        abort(404)
+
+    form = FlaskForm()
+
+    if form.validate_on_submit():
+        db.session.delete(address)
+        db.session.commit()
+
+        return redirect(url_for('list_addresses'))
+
+    return render_template('address_delete.html', form=form, address=address)
 
 
 @app.route('/users/list')

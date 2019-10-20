@@ -54,6 +54,12 @@ class TransportForm(FlaskForm):
     save = SubmitField('Save')
     saveasnew = SubmitField('Save as new')
 
+
+class AddressForm(FlaskForm):
+    public = BooleanField('public')
+    address = TextAreaField('Address', validators=[DataRequired()])
+
+
 class RoleForm(FlaskForm):
     role = SelectField('Role', validators=[DataRequired()], choices=list(Roles.items()))
 

@@ -26,8 +26,56 @@
                 </small>
             </div>
         </div>
-        {{ render_form_group(render_field(transportform.origin, 6) + render_field(transportform.destination, 6))
-        }}
+
+        <div class="form-row">
+            <div class="form-group col-sm-6">
+                {{ transportform.origin.label() }}
+                {% if addresslist %}
+                <select class="form-control" onchange="fillAddress('origin', this.value);">
+                    <option value=""></option>
+                    {% for addr in addresslist: %}
+                    <option value="{{ addr.id }}">{{ addr.address }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+                {% if not transportform.origin.errors %}
+                {{ transportform.origin(class='form-control addressarea', placeholder=transportform.origin.label.text)|safe }}
+                {% else %}
+                {{ transportform.origin(class='form-control addressarea is-invalid', placeholder=transportform.origin.label.text)|safe }}
+                <div class="invalid-feedback">
+                    <ul class=errors>
+                        {% for error in transportform.origin.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group col-sm-6">
+                {{ transportform.destination.label() }}
+                {% if addresslist %}
+                <select class="form-control" onchange="fillAddress('destination', this.value);">
+                    <option value=""></option>
+                    {% for addr in addresslist: %}
+                    <option value="{{ addr.id }}">{{ addr.address }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+                {% if not transportform.destination.errors %}
+                {{ transportform.destination(class='form-control addressarea', placeholder=transportform.destination.label.text)|safe }}
+                {% else %}
+                {{ transportform.destination(class='form-control addressarea is-invalid', placeholder=transportform.destination.label.text)|safe }}
+                <div class="invalid-feedback">
+                    <ul class=errors>
+                        {% for error in transportform.destination.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
 
         {{ render_form_group(render_field(transportform.date, 3) + render_field(transportform.time, 3) +
         render_field(transportform.vehicle, 6)) }}
@@ -69,5 +117,18 @@
         </div>
     </div>
 </form>
+
+<script type="text/javascript">
+    addresslist = { {% for addr in addresslist %}
+        {{ addr.id }}: `{{ addr.address }}`,
+    {% endfor %} };
+
+
+    function fillAddress(target, id) {
+        if (id) {
+            $('#' + target).val(addresslist[id]);
+        }
+    }
+</script>
 {% endif %}
 {% endblock %}
