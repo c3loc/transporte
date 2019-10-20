@@ -59,8 +59,9 @@ def login():
         email = loginform.login.data.lower()
 
         try:
-            v = validate_email(email)
-            email = v['email'] # replace with normalized form
+            if not app.config['DEBUG']:
+                v = validate_email(email)
+                email = v['email'] # replace with normalized form
 
         except Exception as e:
             loginform.login.errors.append(str(e))
