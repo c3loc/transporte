@@ -7,11 +7,12 @@
 
 {% block content %}
 <h1 class="page-header">Transports</h1>
-<form method="GET" style="float: left;">
+<div class="row" style="margin:0 0 1em 0">
+<form method="GET">
     {{ filterform.day(**{'onchange': 'this.form.submit()'}) }}
 </form>
 <label style="margin-left: 20px;"><input type="checkbox" id="hideDone" /> hide done</label>
-
+</div>
 <table class="table table-sm" style="font-size: 0.9rem" id="transportlist">
     <thead>
     <tr>
