@@ -15,12 +15,21 @@
         <div class="form-group col-sm-12">
             <div class="form-check">
 
-                <input class="form-check-input" id="needs_organization" name="needs_organization"
-                       placeholder="Needs organization" type="checkbox"
-                       value="{{ transportform.needs_organization.data }}" {% if transportform.needs_organization.data
-                       %}checked{% endif %}>
+                {% if not transportform.needs_organization.errors %}
+                {{ transportform.needs_organization(class='form-check-input', placeholder=transportform.needs_organization.label.text)|safe }}
+                {% else %}
+                {{ transportform.needs_organization(class='form-check-input is-invalid', placeholder=transportform.needs_organization.label.text)|safe }}
+                <div class="invalid-feedback">
+                    <ul class=errors>
+                        {% for error in transportform.needs_organization.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
 
-                <label class="form-check-label" for="needs_organization">Needs organization</label>
+                {{ transportform.needs_organization.label(class='form-check-label' ) }}
+
                 <small id="needsOrganizationHelpBlock" class="form-text text-muted">
                     Check this box if you need us to organize your transport (need help, driver, spedition, ..)
                 </small>
