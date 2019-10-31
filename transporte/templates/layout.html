@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/dataTables-1.10.18.bootstrap4.min.css') }}"/>
 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}"/>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
     <script type="text/javascript"
@@ -50,6 +51,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('list_transports') }}">List Transports</a>
             </li>
+            {% if current_user.role in ['helpdesk', 'admin'] %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('list_addresses') }}">Addresses</a>
+            </li>
+            {% endif %}
             {% if current_user.role in ['admin'] %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('list_users') }}">List Users</a>

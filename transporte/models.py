@@ -15,6 +15,7 @@ class User(UserMixin, db.Model):
     login = db.Column(db.String(256), index=True, unique=True)
     role = db.Column(db.String(64), default='user')
     transports = db.relationship('Transport', backref='user', lazy='dynamic')
+    addresses = db.relationship('Address', backref='user', lazy='dynamic')
 
     def create_token(self):
         s = Serializer(app.config['SECRET_KEY'])
@@ -53,6 +54,11 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.login)
 
+class Address(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    public = db.Column(db.Boolean, default=False, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    address = db.Column(db.Text, nullable=False)
 
 class Transport(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

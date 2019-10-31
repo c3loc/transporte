@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1 class="page-header">Addresses</h1>
+<a href="{{ url_for('edit_address') }}">Add Address</a>
+<table class="table" id="userlist">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Address</th>
+            <th scope="col">public?</th>
+            <th scope="col">User</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for address in addresslist %}
+        <tr>
+            <td scope="row"><a href="{{ url_for('edit_address', id=address.id) }}">{{ address.id }}</a></td>
+            <td>{{ address.address|nl2br }}</td>
+            <td>{{ address.public }}</td>
+            <td>{{ address.user.login }}</td>
+            <td>
+                {% if current_user.id == address.user_id or current_user.role in ['admins']: %}
+                <div class="pull-right">
+                    <a href="{{ url_for('edit_address', id=address.id) }}" class="btn btn-warning"><i
+                            class="fas fa-pencil-alt"></i></a>
+                </div>
+                <div class="pull-right">
+                    <a href="{{ url_for('delete_address', id=address.id) }}" class="btn btn-danger"><i
+                            class="fas fa-trash"></i></a>
+                </div>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#userlist').DataTable({
+            "stateSave": true,
+        } );
+    });
+</script>
+{% endblock  %}

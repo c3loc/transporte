@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+{% from "_formhelper.html" import render_form_group, render_field %}
+
+{% block content %}
+<h1 class="page-header">Address Details</h1>
+
+<form class="col-lg-offset-1 form-horizontal" role="form"
+      action="{{ url_for('edit_address', id=address.id) if address else url_for('edit_address') }}"
+      method="POST">
+    {{ addressform.csrf_token }}
+
+    <div class="form-row">
+        <div class="form-group col-sm-12">
+            {{ addressform.address.label() }}
+            {% if not addressform.address.errors %}
+            {{ addressform.address(class='form-control addressarea', placeholder=addressform.address.label.text)|safe }}
+            {% else %}
+            {{ addressform.address(class='form-control addressarea is-invalid', placeholder=addressform.address.label.text)|safe }}
+            <div class="invalid-feedback">
+                <ul class=errors>
+                    {% for error in addressform.address.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+   <div class="form-group col-sm-12">
+        <div class="form-check">
+
+        {% if not addressform.public.errors %}
+            {{ addressform.public(class='form-check-input', placeholder=addressform.public.label.text)|safe }}
+        {% else %}
+            {{ addressform.public(class='form-check-input is-invalid', placeholder=addressform.public.label.text)|safe }}
+            <div class="invalid-feedback">
+                <ul class=errors>
+                    {% for error in addressform.public.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+            <small id="needsOrganizationHelpBlock" class="form-text text-muted">
+                Check this box if the address can be used by anyone. Else it is only visible for helpdesk and admins.
+            </small>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-3">
+            <button class="btn btn-lg btn-primary" type="submit">Save</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
