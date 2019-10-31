@@ -271,7 +271,7 @@ def edit_address(id=None):
     if id is not None:
         address = Address.query.get(id)
 
-        if not (current_user.id == address.user_id or current_user.role in ['helpdesk', 'admin']):
+        if not (current_user.id == address.user_id or current_user.role in ['admin']):
             address = None
     else:
         address = Address()
