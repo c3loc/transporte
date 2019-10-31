@@ -280,7 +280,6 @@ def edit_user(id=None):
 @login_required
 def me():
     token = current_user.create_token()
-    print('foo')
     return render_template('me.html', token=token)
 
 
