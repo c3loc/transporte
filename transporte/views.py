@@ -173,7 +173,7 @@ def edit_transport(id=None):
     addresslist = addresslist.all()
 
     return render_template('transport_details_edit.html', transportform=transportform, transport=transport,
-                           addresslist=addresslist)
+                           addresslist=addresslist, config=app.config)
 
 
 @app.route('/transports/list')
@@ -192,7 +192,8 @@ def list_transports():
     if filterform.day.data != 'None':
         transportlist = transportlist.filter(Transport.date == parser.parse(filterform.day.data).date())
 
-    return render_template('transport_list.html', transportlist=transportlist, filterform=filterform)
+    return render_template('transport_list.html', transportlist=transportlist, filterform=filterform,
+                           config=app.config)
 
 
 @app.route('/transports/show/<int:id>')
