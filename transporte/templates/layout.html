@@ -40,16 +40,8 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <!--
-            <li class="nav-item active">
-                <a class="nav-link" href=" {{ url_for('edit_transport') }}">Add Transport <span class="sr-only">(current)</span></a>
-            </li>
-            -->
             <li class="nav-item">
-                <a class="nav-link" href=" {{ url_for('edit_transport') }}">Add Transport</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('list_transports') }}">List Transports</a>
+                <a class="nav-link" href="{{ url_for('list_transports') }}">Transports</a>
             </li>
             {% if current_user.role in ['helpdesk', 'admin'] %}
             <li class="nav-item">
@@ -58,7 +50,7 @@
             {% endif %}
             {% if current_user.role in ['admin'] %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('list_users') }}">List Users</a>
+                <a class="nav-link" href="{{ url_for('list_users') }}">Users</a>
             </li>
             {% endif %}
         </ul>
