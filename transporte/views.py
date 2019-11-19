@@ -213,6 +213,23 @@ def show_transport(id=None):
     return render_template('transport_details.html', transport=transport)
 
 
+@app.route('/transports/sticker/<int:id>')
+@login_required
+def sticker_transport(id=None):
+    transport = Transport.query.get(id)
+    if transport is None or not (
+            transport.user_id == current_user.id or current_user.role in ['helpdesk', 'admin']):
+        transport = None
+        flash('Transport is not available')
+    else:
+        if transport.done:
+            flash('Transport is done', 'success')
+        elif transport.cancelled:
+            flash('Transport was cancelled!', 'danger')
+
+    return render_template('transport_sticker.html', transport=transport)
+
+
 @app.route('/transports/mark/<mark>/<int:id>', methods=['GET', 'POST'])
 @login_required
 def mark_transport(mark, id=None):
