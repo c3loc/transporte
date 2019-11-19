@@ -49,10 +49,12 @@
         <p>Transport Tool Link</p>
         <img src=" {{ qrcode(url_for('show_transport', id=transport.id, _external=True)) }}" />
       </div>
+{% if transport.ticket_id %}
       <div class="col-sm">
         <p>Ticket Link</p>
         <img src=" {{ qrcode('https://tickets.c3loc.de/#ticket/zoom/{}'.format(transport.ticket_id)) }}" />
       </div>
+{% endif %}
     </div>
   </div>
   </div>
