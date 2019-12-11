@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="/static/gfx/list.jpg">
+
+    <title>{{ app_name }}</title>
+
+    {% block meta %}{% endblock %}
+
+    <link rel="stylesheet" type="text/css" 
+          href="{{ url_for('static', filename='css/fa-v5.5.0-all.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/bootstrap-4.1.1.min.css') }}"/>
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/dataTables-1.10.18.bootstrap4.min.css') }}"/>
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/main.css') }}"/>
+
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js/bootstrap-4.1.1.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js/jquery.dataTables-1.10.18.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js/dataTables-1.10.18.bootstrap4.min.js') }}"></script>
+
+    <style>
+        body{
+          width: 21cm;
+          height: 29.7cm;
+          margin: 30mm 45mm 30mm 45mm;
+          font-size: 2rem;
+        } 
+    </style>
+</head>
+
+<body>
+  <div class="container" style="position:relative;height:100%;">
+  <h1>Transport Sticker</h1>
+  <p><strong>Inhalt:</strong><br/><div style="height:3em;border-bottom:solid 1px;"></div></p>
+  <p><strong>Ziel:</strong><br/><div style="border-bottom:solid 1px;">{{ transport.destination|nl2br }}</div></p>
+  <p><strong>Datum:</strong><br/><div style="border-bottom:solid 1px;">{{ transport.date|datetime }}, {{ transport.time }}</div></p>
+  <div class="container" style="position: absolute; bottom:1em;">
+    <div class="row">
+      <div class="col-sm">
+        <p>Transport Tool Link</p>
+        <img src=" {{ qrcode(url_for('show_transport', id=transport.id, _external=True)) }}" />
+      </div>
+{% if transport.ticket_id %}
+      <div class="col-sm">
+        <p>Ticket Link</p>
+        <img src=" {{ qrcode('https://tickets.c3loc.de/#ticket/zoom/{}'.format(transport.ticket_id)) }}" />
+      </div>
+{% endif %}
+    </div>
+  </div>
+  </div>
+</body>
+</html>

@@ -196,8 +196,9 @@ def list_transports():
 
 
 @app.route('/transports/show/<int:id>')
+@app.route('/transports/show/<int:id>/<string:format>')
 @login_required
-def show_transport(id=None):
+def show_transport(id=None, format=None):
     transport = Transport.query.get(id)
 
     if transport is None or not (
@@ -210,7 +211,11 @@ def show_transport(id=None):
         elif transport.cancelled:
             flash('Transport was cancelled!', 'danger')
 
-    return render_template('transport_details.html', transport=transport)
+    if format == 'sticker':
+        template = 'transport_sticker.html'
+    else:
+        template = 'transport_details.html'
+    return render_template(template, transport=transport)
 
 
 @app.route('/transports/mark/<mark>/<int:id>', methods=['GET', 'POST'])
