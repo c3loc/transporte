@@ -380,7 +380,7 @@ def format_datetime(value):
     return babel.dates.format_datetime(value, format)
 
 
-_paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
+_paragraph_re = re.compile(r'(?:\r\n|\r|\n)')
 
 
 @evalcontextfilter
