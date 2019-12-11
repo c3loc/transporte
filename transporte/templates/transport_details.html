@@ -6,7 +6,7 @@
 
 <p class="small">
   Ticket <a href="https://tickets.c3loc.de/#ticket/zoom/{{ transport.ticket_id }}" target="_blank">#{{ transport.ticket_id }}</a>
-  Print <a href="{{ url_for('sticker_transport', id=transport.id) }}" target="_blank">Transport Sticker</a>
+  Print <a href="{{ url_for('show_transport', id=transport.id, format='sticker') }}" target="_blank">Transport Sticker</a>
 </p>
 
 <div class="row">
