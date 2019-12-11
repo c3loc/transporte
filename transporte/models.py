@@ -33,8 +33,10 @@ class User(UserMixin, db.Model):
             return
 
         # send login email
-        msg = Message('Ohai!', recipients=[self.login])
-        msg.body = 'Here is your login link: {}'.format(url_for('login_with_token', token=token, _external=True))
+        msg = Message('Your LOC transport tool credentials!', recipients=[self.login])
+        msg.body = 'Hi, na! \n\n' +
+                   'Thank you for helping us keeping an overview of your transports :) \n' +
+                   'Here is your login link: {}'.format(url_for('login_with_token', token=token, _external=True))
 
         mail.send(msg)
 
