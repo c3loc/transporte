@@ -7,6 +7,9 @@
 <p class="small">
   Ticket <a href="https://tickets.c3loc.de/#ticket/zoom/{{ transport.ticket_id }}" target="_blank">#{{ transport.ticket_id }}</a>
   Print <a href="{{ url_for('show_transport', id=transport.id, format='sticker') }}" target="_blank">Transport Sticker</a>
+  {% if current_user.id == transport.user_id or current_user.role in ['helpdesk', 'admin'] %}
+  Edit <a href="{{ url_for('edit_transport', id=transport.id) }}">Transport</a>
+  {% endif %}
 </p>
 
 <div class="row">
