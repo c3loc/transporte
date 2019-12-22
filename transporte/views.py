@@ -89,7 +89,7 @@ def login_with_token(token):
     user = User.verify_login_token(token)
 
     if user:
-        login_user(user)
+        login_user(user, remember=True)
 
         return redirect(url_for('index'))
     else:
