@@ -88,6 +88,18 @@
 <script type="text/javascript">
     var table;
 
+    function updateHideDone() {
+        if ($('#hideDone').is(':checked')) {
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    return data[12] == "open";
+                });
+        } else {
+            $.fn.dataTable.ext.search.pop();
+        }
+        table.draw()
+    }
+
     $(document).ready(function () {
         table = $('#transportlist').DataTable( {
             order: [[2, "asc"]],
@@ -101,20 +113,14 @@
 
         $('#hideDone').on('change', function() {
             localStorage.setItem('hideDone', $(this).is(':checked'));
-            if ($(this).is(':checked')) {
-                $.fn.dataTable.ext.search.push(
-                    function(settings, data, dataIndex) {
-                        return data[12] == "open";
-                    });
-            } else {
-                $.fn.dataTable.ext.search.pop();
-            }
-            table.draw()
+            updateHideDone()
         });
 
         if (localStorage.getItem('hideDone') === "true") {
-            $('#hideDone').click();
+            $('#hideDone').prop('checked', true);
         }
+
+        updateHideDone()
     });
 </script>
 {% endblock  %}
