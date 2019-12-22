@@ -86,10 +86,11 @@ def login():
 
 @app.route('/login/token/<token>')
 def login_with_token(token):
+    remember_me = ((request.args.get('remember_me', default="false").lower()) == "true")
     user = User.verify_login_token(token)
 
     if user:
-        login_user(user)
+        login_user(user, remember=remember_me)
 
         return redirect(url_for('index'))
     else:

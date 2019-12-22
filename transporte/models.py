@@ -36,7 +36,8 @@ class User(UserMixin, db.Model):
         msg = Message('Your LOC transport tool credentials!', recipients=[self.login])
         msg.body = ('Hi, na! \n\n'
                     'Thank you for helping us keeping an overview of your transports :) \n'
-                    'Here is your login link: {}'.format(url_for('login_with_token', token=token, _external=True)))
+                    'Here is your login link: {}. \n'
+                    'If you want to stay logged in on this device use this link instead: {}.'.format(url_for('login_with_token', token=token, _external=True), url_for('login_with_token', token=token, _external=True, remember_me='true')))
 
         mail.send(msg)
 
