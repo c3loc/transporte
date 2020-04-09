@@ -5,17 +5,19 @@ import re
 import babel
 from dateutil import parser
 from email_validator import validate_email
-from flask import (Markup, abort, escape, flash, redirect, render_template,
-                   request, send_from_directory, url_for)
+from flask import Markup, abort
+from flask import current_app as app
+from flask import (escape, flash, redirect, render_template, request,
+                   send_from_directory, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
+from flask_wtf import FlaskForm
 from jinja2 import evalcontextfilter
 from werkzeug.utils import secure_filename
-from flask import current_app as app
 
-from flask_wtf import FlaskForm
 from . import db, login_manager
-from .forms import LoginForm, TransportForm, TransportFilterForm, AddressForm, RoleForm, VehicleTypes, Roles
-from .models import User, Address, Transport, File
+from .forms import (AddressForm, LoginForm, RoleForm, Roles,
+                    TransportFilterForm, TransportForm, VehicleTypes)
+from .models import Address, File, Transport, User
 from .zammad_integration import close_ticket, update_ticket
 
 

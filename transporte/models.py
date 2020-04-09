@@ -1,8 +1,9 @@
 
-from flask import Markup, flash, url_for
+from flask import Markup
+from flask import current_app as app
+from flask import flash, url_for
 from flask_login import UserMixin
 from flask_mail import Message
-from flask import current_app as app
 from itsdangerous import BadSignature, SignatureExpired
 from itsdangerous import URLSafeTimedSerializer as Serializer
 
