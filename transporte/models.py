@@ -1,13 +1,12 @@
 
-from .transporte import app, db, mail
-
-from flask import flash, Markup, url_for
-
+from flask import Markup, flash, url_for
 from flask_login import UserMixin
 from flask_mail import Message
-
-from itsdangerous import URLSafeTimedSerializer as Serializer
+from flask import current_app as app
 from itsdangerous import BadSignature, SignatureExpired
+from itsdangerous import URLSafeTimedSerializer as Serializer
+
+from . import db, mail
 
 
 class User(UserMixin, db.Model):
@@ -56,11 +55,13 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.login)
 
+
 class Address(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     public = db.Column(db.Boolean, default=False, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     address = db.Column(db.Text, nullable=False)
+
 
 class Transport(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

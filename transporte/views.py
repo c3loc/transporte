@@ -1,23 +1,22 @@
-from .transporte import app, db, login_manager
-from .models import *
-from .forms import *
-
 import datetime
-from flask import request, g, render_template, session, url_for, redirect, flash, Markup, escape, \
-    send_from_directory, abort
-from jinja2 import evalcontextfilter
-
-from email_validator import validate_email
-
-from flask_login import login_user, logout_user, login_required, current_user
-from .zammad_integration import update_ticket, close_ticket
+import os
+import re
 
 import babel
-import re
-import os
-
 from dateutil import parser
+from email_validator import validate_email
+from flask import (Markup, abort, escape, flash, redirect, render_template,
+                   request, send_from_directory, url_for)
+from flask_login import current_user, login_required, login_user, logout_user
+from jinja2 import evalcontextfilter
 from werkzeug.utils import secure_filename
+from flask import current_app as app
+
+from flask_wtf import FlaskForm
+from . import db, login_manager
+from .forms import LoginForm, TransportForm, TransportFilterForm, AddressForm, RoleForm, VehicleTypes, Roles
+from .models import User, Address, Transport, File
+from .zammad_integration import close_ticket, update_ticket
 
 
 @app.route('/')
@@ -34,16 +33,16 @@ def index():
         ),
     )
 
-    query = Transport.query.filter(Transport.cancelled == False)
+    query = Transport.query.filter(not Transport.cancelled)
 
     try:
         todo[0]['progress'] = 100 / query.filter(Transport.date == datetime.date.today()).count() * query.filter(
-            Transport.date == datetime.date.today()).filter(Transport.done == True).count()
+            Transport.date == datetime.date.today()).filter(Transport.done).count()
     except ZeroDivisionError:
         pass
 
     try:
-        todo[1]['progress'] = 100 / query.count() * query.filter(Transport.done == True).count()
+        todo[1]['progress'] = 100 / query.count() * query.filter(Transport.done).count()
     except ZeroDivisionError:
         pass
 
@@ -61,7 +60,7 @@ def login():
         try:
             if not app.config['DEBUG']:
                 v = validate_email(email)
-                email = v['email'] # replace with normalized form
+                email = v['email']  # replace with normalized form
 
         except Exception as e:
             loginform.login.errors.append(str(e))
@@ -131,10 +130,10 @@ def edit_transport(id=None):
             db.session.add(transport)
             db.session.commit()
 
-            ##
-            ## if ticket is new, update object with zammad ticket id
-            ##
-            if transport.ticket_id == None:
+            #
+            # if ticket is new, update object with zammad ticket id
+            #
+            if transport.ticket_id is None:
                 transport.ticket_id = update_ticket(transport)
                 db.session.add(transport)
                 db.session.commit()
@@ -168,7 +167,7 @@ def edit_transport(id=None):
     addresslist = Address.query
 
     if current_user.role not in ['admin', 'helpdesk']:
-        addresslist = addresslist.filter(Address.public == True)
+        addresslist = addresslist.filter(Address.public)
 
     addresslist = addresslist.all()
 
@@ -181,7 +180,7 @@ def edit_transport(id=None):
 def list_transports():
     transportlist = Transport.query
 
-    if not current_user.role in ['helpdesk', 'admin']:
+    if current_user.role not in ['helpdesk', 'admin']:
         transportlist = transportlist.filter(Transport.user_id == current_user.id)
 
     dates = transportlist.with_entities(Transport.date).distinct().order_by(Transport.date).all()
@@ -242,9 +241,9 @@ def mark_transport(mark, id=None):
         elif mark == 'cancelled':
             transport.cancelled = True
 
-        ##
-        ## close ticket
-        ##
+        #
+        # close ticket
+        #
         if transport.ticket_id:
             close_ticket(transport, mark)
 
@@ -310,7 +309,7 @@ def edit_address(id=None):
 def delete_address(id):
     address = Address.query.get(id)
 
-    if address is None or current_user.id is not address.user_id or not current_user.role in ['admin']:
+    if address is None or current_user.id is not address.user_id or current_user.role not in ['admin']:
         abort(404)
 
     form = FlaskForm()
