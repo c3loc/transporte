@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import render_template
 from zammad_py import ZammadAPI
 
-from .transporte import app
+from flask import current_app as app
 
 
 def close_ticket(transport, reason):
