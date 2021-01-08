@@ -50,6 +50,17 @@ def index():
     return render_template('layout.html', todo=todo)
 
 
+def get_user(email):
+    user = User.query.filter(User.login == email).first()
+
+    if user is None:
+        # create user
+        user = User(login=email)
+        db.session.add(user)
+        db.session.commit()
+
+    return user
+
 @app.route('/login', methods=['GET', 'POST'])
 # @limiter.limit('10/hour')
 def login():
@@ -68,13 +79,7 @@ def login():
 
             return render_template('login.html', loginform=loginform)
 
-        user = User.query.filter(User.login == email).first()
-
-        if user is None:
-            # create user
-            user = User(login=email)
-            db.session.add(user)
-            db.session.commit()
+        user = get_user(email)
 
         # create token
         user.mail_token()
@@ -96,6 +101,25 @@ def login_with_token(token):
         flash('Invalid or expired token!')
     return redirect(url_for('login'))
 
+@app.route('/login/password/<password>')
+def login_with_password(password):
+    accounts_with_this_pw = [ account['email'] for account in app.config['SPECIAL_HELPDESK_ACCOUNTS'] if account['password'] == password ] 
+
+    if len(accounts_with_this_pw) == 0:
+        return redirect(url_for('login'))
+    elif len(accounts_with_this_pw) > 1:
+        app.logger.warn("Multiple sepcial helpdesk accounts with the same password are not supported!")
+        return redirect(url_for('login'))
+
+    user = get_user(accounts_with_this_pw[0])
+
+    if user:
+        login_user(user)
+
+        return redirect(url_for('index'))
+    else:
+        flash('Invalid or expired token!')
+    return redirect(url_for('login'))
 
 @app.route('/logout')
 @login_required

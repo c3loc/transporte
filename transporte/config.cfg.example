@@ -7,6 +7,12 @@ UPLOAD_DIR = 'uploads'
 SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+#The passwords in this list need to be unique.
+#Login via /login/password/<password>
+SPECIAL_HELPDESK_ACCOUNTS = [{
+    'email': 'mail@exmaple.com',
+    'password': 'secret'
+}]
 
 # mail server config
 MAIL_SERVER = 'SMTP_HOST'
