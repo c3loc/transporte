@@ -3,15 +3,12 @@ import datetime
 
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
-from wtforms import StringField, SelectField, TextAreaField, SubmitField
+from wtforms import SelectField, StringField, SubmitField, TextAreaField
 from wtforms.fields import BooleanField
 from wtforms.fields.html5 import TimeField
-from wtforms.validators import *
-
+from wtforms.validators import DataRequired, Email, Optional
 # DateField from wtforms_components supports min/max depending on DateRange
-from wtforms_components import DateField
-from wtforms_components import DateRange
-
+from wtforms_components import DateField, DateRange
 
 VehicleTypes = {
     'car': 'Car',
